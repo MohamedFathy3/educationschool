@@ -1,0 +1,55 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\{{ model }}CreateRequest;
+use App\Http\Requests\{{ model }}UpdateRequest;
+use App\Http\Resources\{{ model }}Resource;
+use App\Models\{{ model }};
+use App\Traits\HttpResponses;
+
+class {{ class }} extends Controller
+{
+    use HttpResponses;
+
+    public function index(Request $request)
+    {
+        $search = $request->get('search');
+        if ($search) {
+            ${{ modelPlural }} = {{ model }}::whereAny(
+                ['name'],
+                'like',
+                '%' . $search . '%'
+            )->get();
+        } else {
+            ${{ modelPlural }} = {{ model }}::all();
+        }
+
+        return $this->success({{ model }}Resource::collection(${{ modelPlural }}), '{{ modelPlural }} fetched successfully.');
+    }
+
+    public function store({{ model }}CreateRequest $request)
+    {
+        ${{ modelVariable }} = {{ model }}::create($request->validated());
+        return $this->success(new {{ model }}Resource(${{ modelVariable }}), '{{ model }} created successfully.');
+    }
+
+    public function show({{ model }} ${{ modelVariable }})
+    {
+        return $this->success(new {{ model }}Resource(${{ modelVariable }}), '{{ model }} fetched successfully.');
+    }
+
+    public function update({{ model }}UpdateRequest $request, {{ model }} ${{ modelVariable }})
+    {
+        ${{ modelVariable }}->update($request->validated());
+        return $this->success(new {{ model }}Resource(${{ modelVariable }}), '{{ model }} updated successfully.');
+    }
+
+    public function destroy({{ model }} ${{ modelVariable }})
+    {
+        ${{ modelVariable }}->delete();
+        return $this->success(null, '{{ model }} deleted successfully.');
+    }
+}

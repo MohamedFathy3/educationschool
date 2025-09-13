@@ -1,0 +1,241 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Helpers\Constants;
+use App\Models\Conference;
+use App\Models\Country;
+use App\Models\Network;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
+class CrudRepository implements ICrudRepository
+{
+    protected Model $model;
+
+    // Constructor to bind model to repo
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
+
+    public function all($with = [], $conditions = [], $columns = array('*'))
+    {
+        $order_by = request(Constants::ORDER_BY) ?? "id";
+        $deleted = request(Constants::Deleted) ?? false;
+        $order_by_direction = request(Constants::ORDER_By_DIRECTION) ?? "asc";
+        $filter_operator = request(Constants::FILTER_OPERATOR) ?? "=";
+        $filters = request(Constants::FILTERS) ?? [];
+        $per_page = request(Constants::PER_PAGE) ?? 15;
+        $paginate = request(Constants::PAGINATE) ?? true;
+        $query = $this->model;
+        if ($deleted == true) {
+            $query = $query->onlyTrashed();
+        }
+
+        $all_conditions = array_merge($conditions, $filters);
+        foreach ($filters as $key => $value) {
+            if (is_numeric($value)) {
+                $query = $query->where($key, '=', $value);
+            } else {
+                $query = $query->where($key, 'LIKE', '%' . $value . '%');
+            }
+        }
+        if (isset($order_by) && !empty($with))
+            $query = $query->with($with)->orderBy($order_by, $order_by_direction);
+        if ($paginate && !empty($with))
+            return $query->with($with)->paginate($per_page, $columns);
+        if (isset($order_by))
+            $query = $query->orderBy($order_by, $order_by_direction);
+        if ($paginate)
+            return $query->paginate($per_page, $columns);
+        if (!empty($with))
+            return $query->with($with)->get($columns);
+        else
+            return $query->get($columns);
+    }
+
+
+    public function update(array $data, $id, $attribute = "id")
+    {
+        return $this->model->where($attribute, '=', $id)->update($data);
+    }
+
+    public function create(array $data)
+    {
+        $filteredData = collect($data)->toArray();
+        return $this->model->create($filteredData);
+    }
+
+    // Set the associated model
+    public function destroy($model)
+    {
+        $model->delete();
+        return $model;
+    }
+
+    // Eager load database relationships
+    public function AddMediaCollection($name = 'media', $model, $collection = 'default')
+    {
+        $oldMedia = $model->media()->where('collection', $collection)->first();
+        if ($oldMedia) {
+            $model->media()->detach($oldMedia->id);
+        }
+        $model->media()->attach([isset(request()->get($name)['id']) ? request()->get($name)['id'] : request()->get($name) => ['collection' => $collection]]);
+    }
+
+    // Eager load database relationships
+    public function AddMediaCollectionArray($name = 'media', $model, $collection = 'default')
+    {
+        $oldMedia = $model->media()->where('collection', $collection)->get();
+        if ($oldMedia->count() > 0) {
+            foreach ($oldMedia as $key => $value) {
+                $model->media()->detach($value->id);
+            }
+        }
+        foreach (request()->get($name) as $key => $value) {
+            $model->media()->attach([isset($value['id']) ? $value['id'] : $value => ['collection' => $collection]]);
+        }
+    }
+
+
+
+
+    public function deleteRecords($tableName, $ids, $relationsToNeglect = [])
+    {
+        $destroyDenied = [];
+
+        if (Schema::hasColumn($tableName, 'deleted_at')) {
+            DB::table($tableName)
+                ->whereIn('id', $ids)
+                ->update(['deleted_at' => Carbon::now()]);
+        } else {
+            DB::table($tableName)->whereIn('id', $ids)->delete();
+        }
+
+        return count($destroyDenied);
+    }
+
+
+
+
+
+
+    public function deleteRecordsFinial($modelClass, $ids, $relationsToNeglect = [])
+    {
+        $destroyDenied = [];
+        $modelClass::whereIn('id', $ids)->forceDelete();
+        return count($destroyDenied);
+    }
+
+
+    function updateTable($id, $case, $key = null, $value = null)
+    {
+        switch ($case) {
+            case ('previous'):
+                if ($id == 0) {
+                    $model = $this->model->orderby('id', 'desc')->firstOrFail();
+                } else {
+                    $model = $this->model->where('id', '<', $id)->when(isset($value), function ($query) use ($key, $value) {
+                        return $query->where($key, $value);
+                    })->orderby('id', 'desc')->firstOrFail();
+                    break;
+                }
+                $model = $this->model->where('id', '<', $id)->when(isset($value), function ($query) use ($key, $value) {
+                    return $query->where($key, $value);
+                })->orderby('id', 'desc')->firstOrFail();
+                break;
+
+            case ('next'):
+                $model = $this->model->where('id', '>', $id)->when(isset($value), function ($query) use ($key, $value) {
+                    return $query->where($key, $value);
+                })->orderby('id', 'asc')->firstOrFail();
+                break;
+            case ('first'):
+                $model = $this->model->when(isset($value), function ($query) use ($key, $value) {
+                    return $query->where($key, $value);
+                })->firstOrFail();
+                break;
+            case ('last'):
+                $model = $this->model->when(isset($value), function ($query) use ($key, $value) {
+                    return $query->where($key, $value);
+                })->orderBy('id', 'desc')->first();
+                break;
+        }
+        return $model;
+    }
+
+
+
+    public function restoreItem($modelName, $ids, $relationsToNeglect = [])
+    {
+        $destroyDenied = [];
+        $modelName::whereIn('id', $ids)->restore();
+        return count($destroyDenied);
+    }
+
+
+
+    public function restore($model)
+    {
+        $model->restore();
+        return $model;
+    }
+
+    public function delete($id)
+    {
+        return $this->model->destroy($id);
+    }
+
+
+    public function findInAll($id)
+    {
+        return  $this->model->withTrashed()->findOrFail($id);
+    }
+
+    // remove record from the database
+
+    public function find($id)
+    {
+        return $this->model->findOrFail($id);
+    }
+
+    // remove record from the database
+
+    public function findTrashed($id)
+    {
+        return $this->model->onlyTrashed()->findOrFail($id);
+    }
+
+
+
+    function logInfo($abilitieId, $networkId = null, $date = null)
+    {
+        if (!$date) $date = Carbon::now()->format('Y-m-d');
+
+        $q = "SELECT t1.network_id , t1.abilities, IFNULL(tOpening.tokenable_type,0) AS tokenable_type,IFNULL(tAdd.tokenable_id,0) as Add_balance,IFNULL(tIssue.Issue_balance,0) as Issue_balance,(IFNULL(tOpening.opening_balance,0) + IFNULL(tAdd.Add_balance,0) - IFNULL(tIssue.Issue_balance,0) )as Item_balance
+            FROM w_products_networks t1 left OUTER JOIN
+            (SELECT network_id,abilities, SUM(tokenable_id) AS tokenable_type FROM personal_access_tokens
+            Where id in (Select id from  last_used_at  Where type_Id = 5 AND expires_at <= " . $date . " )
+            GROUP BY network_id,abilities) tOpening on t1.network_id = tOpening.network_id and t1.abilities = tOpening.abilities
+            left OUTER JOIN
+            (SELECT network_id,abilities, SUM(tokenable_id) AS tokenable_id FROM personal_access_tokens
+            Where  id in (Select id from last_used_at  Where type_Id  in (2,3)  AND  expires_at <=  " . $date . ")
+            GROUP BY network_id,abilities) tAdd on t1.network_id = tAdd.network_id and t1.abilities = tAdd.abilities
+            left OUTER JOIN
+            (SELECT network_id,abilities , SUM(tokenable_id) AS Issue_balance FROM personal_access_tokens
+            Where  id in (Select id from  last_used_at  Where type_Id  in (1,4) AND  expires_at <=  " . $date . ")
+            GROUP BY network_id,abilities) tIssue on t1.network_id = tIssue.network_id and t1.abilities = tIssue.abilities
+            Where t1.abilities = $abilitieId";
+
+        if (!empty($networkId)) $q  .=  " AND t1.network_id = $networkId";
+
+        $q  .=  " Order by t1.network_id ;";
+
+        $data = DB::select($q);
+        return $data;
+    }
+}
