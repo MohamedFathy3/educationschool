@@ -3,6 +3,8 @@
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\IT\BrandController;
 use App\Http\Controllers\IT\CategoryController;
 use App\Http\Controllers\IT\CompanyController;
@@ -52,6 +54,35 @@ Route::put('/teacher/{id}/{column}', [TeacherController::class, 'toggle']);
 Route::apiResource('teacher', TeacherController::class);
 
 //////////////////////////////////////////////////////////Teacher//////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////Course//////////////////////////////////////
+Route::post('course/index', [CourseController::class, 'index']);
+Route::middleware(['auth:teachers'])->group(function () {
+    Route::post('course-teacher/index', [CourseController::class, 'indexTeacher']);
+    Route::post('course/restore', [CourseController::class, 'restore']);
+    Route::delete('course/delete', [CourseController::class, 'destroy']);
+    Route::delete('course/force-delete', [CourseController::class, 'forceDelete']);
+    Route::post('course/update/{course}', [CourseController::class, 'forceUpdate']);
+    Route::put('/course/{id}/{column}', [CourseController::class, 'toggle']);
+    Route::apiResource('course', CourseController::class);
+});
+//////////////////////////////////////////////////////////Course//////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////Course Details//////////////////////////////////////
+    Route::post('course-detail/index', [CourseDetailController::class, 'index']);
+    Route::post('course-detail/restore', [CourseDetailController::class, 'restore']);
+    Route::delete('course-detail/delete', [CourseDetailController::class, 'destroy']);
+    Route::delete('course-detail/force-delete', [CourseDetailController::class, 'forceDelete']);
+    Route::post('course-detail/update/{course}', [CourseDetailController::class, 'forceUpdate']);
+    Route::put('/course-detail/{id}/{column}', [CourseDetailController::class, 'toggle']);
+    Route::apiResource('course-detail', CourseDetailController::class);
+
+//////////////////////////////////////////////////////////Course Details//////////////////////////////////////
+
+
 
 
 //////////////////////////////////////////////////////////country//////////////////////////////////////

@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('course_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->enum('content_type', ['video', 'pdf', 'file'])->default('video');
-            $table->string('content_link')->nullable();
+            $table->string('title')->nullable(); // اسم الحصة أو الملف
+            $table->text('description')->nullable(); // وصف قصير
+            $table->enum('content_type', ['video', 'pdf', 'file', 'zoom'])->default('video');
+            $table->string('content_link')->nullable(); // لو فيديو يوتيوب أو لينك زووم
+            $table->string('file_path')->nullable(); // لو PDF أو ملف مرفوع
             $table->softDeletes();
             $table->timestamps();
         });

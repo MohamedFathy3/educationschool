@@ -25,8 +25,8 @@ class StageController extends BaseController
     public function index()
     {
         try {
-            $brands = StageResource::collection($this->crudRepository->all());
-            return $brands->additional(JsonResponse::success());
+            $Stages = StageResource::collection($this->crudRepository->all());
+            return $Stages->additional(JsonResponse::success());
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }

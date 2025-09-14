@@ -17,10 +17,14 @@ return new class extends Migration
             $table->foreignId('stage_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('country_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->enum('type', ['online', 'recorded'])->default('recorded');
             $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('discount', 5, 2)->default(0); // نسبة مئوية %
+            $table->text('what_you_will_learn')->nullable();
+            $table->string('image')->nullable();
+            $table->string('intro_video_url')->nullable();
             $table->unsignedBigInteger('views_count')->default(0);
             $table->unsignedBigInteger('subscribers_count')->default(0);
             $table->boolean('active')->default(1);

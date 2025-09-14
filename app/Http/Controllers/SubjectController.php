@@ -25,8 +25,8 @@ class SubjectController extends BaseController
     public function index()
     {
         try {
-            $brands = SubjectResource::collection($this->crudRepository->all());
-            return $brands->additional(JsonResponse::success());
+            $Subjects = SubjectResource::collection($this->crudRepository->all());
+            return $Subjects->additional(JsonResponse::success());
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }
@@ -53,7 +53,7 @@ class SubjectController extends BaseController
         }
     }
 
-    
+
     public function show(Subject $subject): ?\Illuminate\Http\JsonResponse
     {
         try {
