@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->enum('type', ['online', 'recorded'])->default('recorded');
+            $table->decimal('original_price', 10, 2)->default(0); // السعر قبل الخصم
             $table->decimal('price', 10, 2)->default(0);
             $table->decimal('discount', 5, 2)->default(0); // نسبة مئوية %
             $table->text('what_you_will_learn')->nullable();

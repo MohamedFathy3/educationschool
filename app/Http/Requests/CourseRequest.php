@@ -28,7 +28,7 @@ class CourseRequest extends FormRequest
             'title'            => 'required|string|max:255',
             'description'      => 'nullable|string',
             'type'             => 'required|in:online,recorded',
-            'price'            => 'required|numeric|min:0',
+            'original_price'            => 'required|numeric|min:0',
             'discount'         => 'nullable|numeric|min:0|max:100',
             'what_you_will_learn' => 'nullable|string',
             'image'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',

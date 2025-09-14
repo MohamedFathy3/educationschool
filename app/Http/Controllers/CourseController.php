@@ -57,6 +57,17 @@ class CourseController extends BaseController
             $data = $request->validated();
             $data['teacher_id'] = Auth::user()->id;
 
+            $originalPrice = $data['original_price'];
+            $discount = $data['discount'] ?? 0;
+
+            if ($discount > 0) {
+                $finalPrice = $originalPrice - ($originalPrice * ($discount / 100));
+            } else {
+                $finalPrice = $originalPrice;
+            }
+
+            $data['price'] = $finalPrice;
+
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
@@ -65,12 +76,13 @@ class CourseController extends BaseController
             }
 
             $this->crudRepository->create($data);
-            return JsonResponse::respondSuccess(trans(JsonResponse::MSG_ADDED_SUCCESSFULLY));
 
+            return JsonResponse::respondSuccess(trans(JsonResponse::MSG_ADDED_SUCCESSFULLY));
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }
     }
+
 
 
 
@@ -89,9 +101,19 @@ class CourseController extends BaseController
 
     public function forceUpdate(CourseRequest $request, Course $course)
     {
-
         try {
             $data = $request->validated();
+
+            $originalPrice = $data['original_price'] ?? $course->original_price;
+            $discount = $data['discount'] ?? $course->discount;
+
+            if ($discount > 0) {
+                $finalPrice = $originalPrice - ($originalPrice * ($discount / 100));
+            } else {
+                $finalPrice = $originalPrice;
+            }
+
+            $data['price'] = $finalPrice;
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
@@ -106,12 +128,18 @@ class CourseController extends BaseController
             }
 
             $this->crudRepository->update($data, $course->id);
-            activity()->performedOn($course)->withProperties(['attributes' => $course])->log('update');
+
+            activity()
+                ->performedOn($course)
+                ->withProperties(['attributes' => $data])
+                ->log('update');
+
             return JsonResponse::respondSuccess(trans(JsonResponse::MSG_UPDATED_SUCCESSFULLY));
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }
     }
+
 
 
     public function destroy(Request $request): ?\Illuminate\Http\JsonResponse
