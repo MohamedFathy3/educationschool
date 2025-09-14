@@ -72,10 +72,10 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        // 'admins' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\Admin::class,
-        // ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
 
          'teachers' => [
             'driver' => 'eloquent',
@@ -115,12 +115,12 @@ return [
             'throttle' => 60,
         ],
 
-        //  'admins' => [
-        //     'provider' => 'admins',
-        //     'table' => 'password_reset_tokens',
-        //     'expire' => 60,
-        //     'throttle' => 60,
-        // ],
+         'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
 
         'teachers' => [
             'provider' => 'teachers',
@@ -128,7 +128,7 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        
+
     ],
 
     /*

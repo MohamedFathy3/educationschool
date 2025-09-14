@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
@@ -37,7 +38,12 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 
 //                                            ADMIN
+Route::post('/admin/login', [AdminController::class, 'login']);
 
+Route::middleware('auth:admins')->group(function () {
+    Route::get('/admin/check-auth', [AdminController::class, 'checkAuth']);
+    Route::post('/admin/logout', [AdminController::class, 'logout']);
+});
 
 //////////////////////////////////////////////////////////Teacher//////////////////////////////////////
 Route::post('teachers/register', [TeacherController::class, 'register']);
