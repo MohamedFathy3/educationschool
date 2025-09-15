@@ -6,6 +6,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\IT\BrandController;
 use App\Http\Controllers\IT\CategoryController;
 use App\Http\Controllers\IT\CompanyController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\IT\StorageController;
 use App\Http\Controllers\IT\TicketController;
 use App\Http\Controllers\IT\TypeController;
 use App\Http\Controllers\StageController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
@@ -89,6 +91,22 @@ Route::middleware(['auth:teachers'])->group(function () {
 //////////////////////////////////////////////////////////Course Details//////////////////////////////////////
 
 
+
+
+
+Route::middleware('auth:teachers')->group(function () {
+    Route::post('exams', [ExamController::class, 'store']); // المدرس يعمل امتحان
+    Route::post('exams/{exam}/questions', [ExamController::class, 'addQuestion']); // إضافة سؤال
+});
+Route::get('exams/{exam}', [ExamController::class, 'show']);
+Route::middleware('auth:students')->post('exams/{exam}/submit', [ExamController::class, 'submit']); // الطالب يجاوب
+
+
+
+
+
+
+
 //////////////////////////////////////////////////////////country//////////////////////////////////////
 
 Route::post('/country/index', [CountryController::class, 'index']);
@@ -126,6 +144,24 @@ Route::put('/subject/{id}/{column}', [SubjectController::class, 'toggle']);
 Route::apiResource('subject', SubjectController::class);
 
 //////////////////////////////////////////////////////////Subject//////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////////////////////Student//////////////////////////////////////
+Route::post('student/register', [StudentController::class, 'register']);
+Route::post('student/login', [StudentController::class, 'login']);
+Route::middleware('auth:sanctum')->get('student/check-auth', [StudentController::class, 'checkAuth']);
+
+Route::post('student/index', [StudentController::class, 'index']);
+Route::post('student/restore', [StudentController::class, 'restore']);
+Route::delete('student/delete', [StudentController::class, 'destroy']);
+Route::delete('student/force-delete', [StudentController::class, 'forceDelete']);
+Route::post('student/update/{student}', [StudentController::class, 'forceUpdate']);
+Route::put('/student/{id}/{column}', [StudentController::class, 'toggle']);
+Route::apiResource('student', StudentController::class);
+
+//////////////////////////////////////////////////////////Student//////////////////////////////////////
 
 
 
