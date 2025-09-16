@@ -61,6 +61,9 @@ Route::delete('teacher/force-delete', [TeacherController::class, 'forceDelete'])
 Route::post('teacher/update/{teacher}', [TeacherController::class, 'forceUpdate']);
 Route::put('/teacher/{id}/{column}', [TeacherController::class, 'toggle']);
 Route::apiResource('teacher', TeacherController::class);
+Route::middleware('auth:admins')->group(function () {
+    Route::put('/teachers/{id}/commission', [TeacherController::class, 'updateCommission']);
+});
 
 //////////////////////////////////////////////////////////Teacher//////////////////////////////////////
 

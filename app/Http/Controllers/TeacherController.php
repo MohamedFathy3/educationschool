@@ -6,6 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\TeacherRequest;
 use App\Http\Requests\UpdateProfileTeacherRequest;
+use App\Http\Requests\UpdateTeacherCommissionRequest;
 use App\Http\Resources\TeacherResource;
 use App\Interfaces\TeacherRepositoryInterface;
 use App\Models\Teacher;
@@ -130,6 +131,23 @@ class TeacherController extends BaseController
 
 
 
+    public function updateCommission(UpdateTeacherCommissionRequest $request, $id)
+    {
+        try {
+            $teacher = Teacher::findOrFail($id);
+            $teacher->commission = $request->commission;
+            $teacher->save();
+
+            return JsonResponse::respondSuccess([
+                'new_commission' => $teacher->commission . '%'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Something went wrong',
+                'details' => $e->getMessage()
+            ], 500);
+        }
+    }
 
 
 /////////////////////////// Front Methods ///////////////////////////

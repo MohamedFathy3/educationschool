@@ -25,8 +25,8 @@ class JsonResponse
     {
         return response()->json([
             'result' => trans(self::MSG_SUCCESS),
-            'data' => $content,
-            'message' => $message,
+            'message' => $content,
+            'data' => $message,
             'status' => $status
         ]);
     }
