@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\JsonResponse;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\EnrollCourseRequest;
 use App\Http\Requests\StudentRequest;
 use App\Http\Resources\StudentResource;
 use App\Interfaces\StudentRepositoryInterface;
@@ -193,6 +194,66 @@ class StudentController extends BaseController
             ]);
         } catch (\Exception $e) {
             return JsonResponse::respondError($e->getMessage());
+        }
+    }
+
+
+
+
+
+
+
+
+
+    public function enroll(EnrollCourseRequest $request)
+    {
+        try {
+            $student = Auth::user();
+            if (!$student instanceof Student) {
+                return response()->json(['error' => 'Only students can enroll'], 403);
+            }
+
+           $student->courses()->syncWithoutDetaching([$request->course_id]);
+            return JsonResponse::respondSuccess([
+                'message' => 'Enrolled successfully',
+                'course_id' => $request->course_id
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Something went wrong',
+                'details' => $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function unenroll(Request $request)
+    {
+        try {
+            $student = Auth::user();
+            if (!$student instanceof Student) {
+                return response()->json(['error' => 'Only students can unenroll'], 403);
+            }
+
+            // لو مش مشترك في الكورس أصلاً
+            if (!$student->courses()->where('course_id', $request->course_id)->exists()) {
+                return response()->json([
+                    'error' => 'You are not enrolled in this course'
+                ], 422);
+            }
+
+            $student->courses()->detach($request->course_id);
+
+            return JsonResponse::respondSuccess([
+                'message' => 'Unenrolled successfully',
+                'course_id' => $request->course_id
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Something went wrong',
+                'details' => $e->getMessage()
+            ], 500);
         }
     }
 

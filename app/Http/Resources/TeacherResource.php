@@ -8,10 +8,32 @@ class TeacherResource extends JsonResource
 {
     public function toArray($request)
     {
+        $coursesCount = $this->courses->count();
+        $studentsCount = $this->courses->flatMap->students->unique('id')->count();
+
+        $totalIncome = 0;
+        $coursesData = [];
+
+        foreach ($this->courses as $course) {
+            $studentsInCourse = $course->students->count();
+            $courseIncome = $course->price * $studentsInCourse;
+            $teacherShare = ($courseIncome * $this->commission) / 100;
+
+            $totalIncome += $teacherShare;
+
+            $coursesData[] = [
+                'course_name' => $course->title,
+                'students_count' => $studentsInCourse,
+                'course_income' => $courseIncome,
+                'teacher_share' => $teacherShare,
+            ];
+        }
         return [
             'id' => $this->id,
             'name' => $this->name   ?? null,
             'email' => $this->email ?? null,
+            'active' => $this->active ?? null,
+            'type' =>"teacher",
             'phone' => $this->phone ?? null,
             'national_id' => $this->national_id ?? null,
             'image' => $this->image ? asset('storage/' . $this->image) : null,
@@ -27,7 +49,12 @@ class TeacherResource extends JsonResource
             'branch_name' => $this->branch_name ?? null,
             'wallets_name' => $this->wallets_name ?? null,
             'wallets_number' => $this->wallets_number ?? null,
-
+             // التقرير
+            'commission' => $this->commission . '%',
+            'courses_count' => $coursesCount,
+            'students_count' => $studentsCount,
+            'total_income' => $totalIncome,
+            'courses' => $coursesData,
         ];
     }
 }

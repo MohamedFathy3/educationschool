@@ -37,9 +37,6 @@ class TeacherController extends BaseController
     }
 
 
-
-
-
     public function show(Teacher $teacher): ?\Illuminate\Http\JsonResponse
     {
         try {

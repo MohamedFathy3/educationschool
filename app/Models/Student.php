@@ -10,9 +10,14 @@ class Student extends BaseModel
     use HasApiTokens,HasFactory;
 
     protected $guarded = ['id'];
-    
+
     public function exams()
     {
         return $this->hasMany(StudentExam::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'course_student');
     }
 }

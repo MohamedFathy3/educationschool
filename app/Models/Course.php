@@ -37,6 +37,12 @@ class Course extends BaseModel
         return $this->belongsTo(Country::class);
     }
 
+    public function students()
+    {
+        return $this->belongsToMany(Student::class, 'course_student')
+                    ->withPivot('created_at')
+                    ->withTimestamps();
+    }
 
 
     public function courseDetail()

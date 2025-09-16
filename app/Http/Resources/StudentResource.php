@@ -12,6 +12,7 @@ class StudentResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name ?? null,
             'email' => $this->email ?? null,
+            'type' =>"student",
             'image' => $this->image ? asset('storage/' . $this->image) : null,
             'qr_code' => $this->qr_code ?? null,
         ];

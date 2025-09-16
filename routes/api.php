@@ -25,6 +25,7 @@ use App\Http\Controllers\IT\ReportController;
 use App\Http\Controllers\IT\StorageController;
 use App\Http\Controllers\IT\TicketController;
 use App\Http\Controllers\IT\TypeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
@@ -152,6 +153,8 @@ Route::apiResource('subject', SubjectController::class);
 Route::post('student/register', [StudentController::class, 'register']);
 Route::post('student/login', [StudentController::class, 'login']);
 Route::middleware('auth:sanctum')->get('student/check-auth', [StudentController::class, 'checkAuth']);
+Route::middleware('auth:sanctum')->post('/student/enroll', [StudentController::class, 'enroll']);
+Route::middleware('auth:sanctum')->post('/student/unenroll', [StudentController::class, 'unenroll']);
 
 Route::post('student/index', [StudentController::class, 'index']);
 Route::post('student/restore', [StudentController::class, 'restore']);
@@ -164,4 +167,9 @@ Route::apiResource('student', StudentController::class);
 //////////////////////////////////////////////////////////Student//////////////////////////////////////
 
 
-
+//////////////////////////////////////////////////////////Message//////////////////////////////////////
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('chat/send', [MessageController::class, 'sendMessage']);
+    Route::get('chat/messages', [MessageController::class, 'getMessages']);
+});
+//////////////////////////////////////////////////////////Message//////////////////////////////////////
