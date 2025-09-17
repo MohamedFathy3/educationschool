@@ -88,7 +88,7 @@ Route::middleware(['auth:teachers'])->group(function () {
     Route::post('course-detail/restore', [CourseDetailController::class, 'restore']);
     Route::delete('course-detail/delete', [CourseDetailController::class, 'destroy']);
     Route::delete('course-detail/force-delete', [CourseDetailController::class, 'forceDelete']);
-    Route::post('course-detail/update/{course}', [CourseDetailController::class, 'forceUpdate']);
+    Route::post('course-detail/update/{course_detail}', [CourseDetailController::class, 'forceUpdate']);
     Route::put('/course-detail/{id}/{column}', [CourseDetailController::class, 'toggle']);
     Route::apiResource('course-detail', CourseDetailController::class);
 
@@ -101,6 +101,7 @@ Route::middleware(['auth:teachers'])->group(function () {
 Route::middleware('auth:teachers')->group(function () {
     Route::post('exams', [ExamController::class, 'store']); // المدرس يعمل امتحان
     Route::post('exams/{exam}/questions', [ExamController::class, 'addQuestion']); // إضافة سؤال
+    Route::delete('/questions/{id}', [ExamController::class, 'destroy']);
 });
 Route::get('exams/{exam}', [ExamController::class, 'show']);
 Route::middleware('auth:students')->post('exams/{exam}/submit', [ExamController::class, 'submit']); // الطالب يجاوب

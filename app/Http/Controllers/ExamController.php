@@ -9,6 +9,7 @@ use App\Http\Resources\ExamResource;
 use App\Http\Resources\QuestionResource;
 use App\Models\Choice;
 use App\Models\Exam;
+use App\Models\Question;
 use App\Models\StudentAnswer;
 use App\Models\StudentExam;
 use Illuminate\Http\Request;
@@ -27,6 +28,23 @@ class ExamController extends Controller
             );
         } catch (\Exception $e) {
             return JsonResponse::respondError($e->getMessage());
+        }
+    }
+    public function destroy($id)
+    {
+        try {
+            $question = Question::findOrFail($id);
+            $question->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Question deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
         }
     }
 
