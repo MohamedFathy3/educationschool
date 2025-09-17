@@ -8,6 +8,7 @@ use App\Http\Requests\QuestionRequest;
 use App\Http\Resources\ExamResource;
 use App\Http\Resources\QuestionResource;
 use App\Models\Choice;
+use App\Models\Course;
 use App\Models\Exam;
 use App\Models\Question;
 use App\Models\StudentAnswer;
@@ -83,6 +84,25 @@ class ExamController extends Controller
         }
     }
 
+    public function getExamsByCourse($courseId)
+    {
+        $course = Course::with('exams')->find($courseId);
+
+        if (!$course) {
+            return response()->json([
+                'result'  => 'Error',
+                'message' => 'Course not found',
+                'status'  => 404
+            ]);
+        }
+
+        return response()->json([
+            'result'  => 'Success',
+            'message' => 'Exams fetched successfully',
+            'data'    => ExamResource::collection($course->exams),
+            'status'  => 200
+        ]);
+    }
 
     public function submit(Request $request, Exam $exam)
     {

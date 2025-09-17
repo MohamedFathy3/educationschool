@@ -102,6 +102,8 @@ Route::middleware('auth:teachers')->group(function () {
     Route::post('exams', [ExamController::class, 'store']); // المدرس يعمل امتحان
     Route::post('exams/{exam}/questions', [ExamController::class, 'addQuestion']); // إضافة سؤال
     Route::delete('/questions/{id}', [ExamController::class, 'destroy']);
+    Route::get('/course/{course}/exams', [ExamController::class, 'getExamsByCourse']);
+
 });
 Route::get('exams/{exam}', [ExamController::class, 'show']);
 Route::middleware('auth:students')->post('exams/{exam}/submit', [ExamController::class, 'submit']); // الطالب يجاوب

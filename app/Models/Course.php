@@ -54,5 +54,9 @@ class Course extends BaseModel
     {
         return $this->hasMany(Subscription::class);
     }
-
+    
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
 }
