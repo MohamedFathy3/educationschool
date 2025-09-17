@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained()->cascadeOnDelete();
-            $table->string('title');
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
             $table->integer('duration')->nullable(); // المدة بالدقايق
             $table->timestamps();
         });

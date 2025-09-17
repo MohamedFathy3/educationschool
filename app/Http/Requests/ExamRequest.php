@@ -19,7 +19,9 @@ class ExamRequest extends FormRequest
         return [
             'course_id' => 'required|exists:courses,id',
             'title'     => 'required|string|max:255',
+            'description'     => 'nullable|string',
             'duration'  => 'nullable|integer',
         ];
     }
 }
+
