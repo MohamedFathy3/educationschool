@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string('wallets_number')->nullable();
 
             $table->decimal('commission', 5, 2)->default(50);
+            $table->decimal('amount', 10, 2)->default(0); // رصيد المدرس
 
             $table->softDeletes();
             $table->timestamps();

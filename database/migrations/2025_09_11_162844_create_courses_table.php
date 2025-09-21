@@ -20,9 +20,12 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->enum('type', ['online', 'recorded'])->default('recorded');
+            $table->enum('course_type', ['private', 'group'])->default('group');
+            $table->integer('count_student')->nullable(); // السعر قبل الخصم
             $table->decimal('original_price', 10, 2)->default(0); // السعر قبل الخصم
             $table->decimal('price', 10, 2)->default(0);
             $table->decimal('discount', 5, 2)->default(0); // نسبة مئوية %
+            $table->string('currency')->nullable();
             $table->text('what_you_will_learn')->nullable();
             $table->string('image')->nullable();
             $table->string('intro_video_url')->nullable();

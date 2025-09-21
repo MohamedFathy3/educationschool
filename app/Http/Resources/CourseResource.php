@@ -20,6 +20,9 @@ class CourseResource extends JsonResource
             'image'              => $this->image ? asset('storage/'.$this->image) : null,
             'intro_video_url'    => $this->intro_video_url,
             'views_count'        => $this->views_count,
+            'course_type'        => $this->course_type ?? null,
+            'count_student'        => $this->count_student ?? null,
+            'currency'        => $this->currency ?? null,
             'subscribers_count'  => $this->subscribers_count,
             'active'             => (bool) $this->active,
             'teacher'            => new TeacherResource($this->whenLoaded('teacher')),
@@ -31,3 +34,6 @@ class CourseResource extends JsonResource
         ];
     }
 }
+
+
+

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CountryController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WithdrawRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -71,7 +73,7 @@ Route::middleware('auth:admins')->group(function () {
 
 //////////////////////////////////////////////////////////Course//////////////////////////////////////
 Route::post('course/index', [CourseController::class, 'index']);
-Route::middleware(['auth:teachers'])->group(function () {
+Route::middleware(['auth:admins,teachers'])->group(function () {
     Route::post('course-teacher/index', [CourseController::class, 'indexTeacher']);
     Route::post('course/restore', [CourseController::class, 'restore']);
     Route::delete('course/delete', [CourseController::class, 'destroy']);
@@ -179,3 +181,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('chat/messages', [MessageController::class, 'getMessages']);
 });
 //////////////////////////////////////////////////////////Message//////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////admin Message//////////////////////////////////////
+Route::post('admin/messages/send', [AdminMessageController::class, 'sendMessage']);
+Route::get('admin/messages', [AdminMessageController::class, 'getMessages']);
+//////////////////////////////////////////////////////////admin Message//////////////////////////////////////
+
+
+
+
+
+
+
+
+
+// للمدرس
+Route::middleware('auth:teachers')->group(function () {
+    Route::post('withdraw-request', [WithdrawRequestController::class, 'store']);
+});
+
+// للأدمن
+Route::middleware('auth:admins')->group(function () {
+    Route::get('withdraw-requests', [WithdrawRequestController::class, 'index']);
+    Route::put('withdraw-request/{withdrawRequest}/status', [WithdrawRequestController::class, 'updateStatus']);
+});

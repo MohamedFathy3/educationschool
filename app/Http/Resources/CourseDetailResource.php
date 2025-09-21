@@ -14,8 +14,12 @@ class CourseDetailResource extends JsonResource
             'description'  => $this->description,
             'content_type' => $this->content_type,
             'content_link' => $this->content_link,
+            'session_date' => $this->session_date ?? null,
+            'session_time' => $this->session_time ?? null,
             'file_path'    => $this->file_path ? asset('storage/'.$this->file_path) : null,
             'created_at'   => $this->created_at,
         ];
     }
 }
+
+

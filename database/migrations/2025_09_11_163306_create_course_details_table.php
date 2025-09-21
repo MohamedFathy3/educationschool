@@ -19,6 +19,8 @@ return new class extends Migration
             $table->enum('content_type', ['video', 'pdf', 'file', 'zoom'])->default('video');
             $table->string('content_link')->nullable(); // لو فيديو يوتيوب أو لينك زووم
             $table->string('file_path')->nullable(); // لو PDF أو ملف مرفوع
+            $table->date('session_date')->nullable(); // يوم الحصة
+            $table->time('session_time')->nullable(); // وقت الحصة
             $table->softDeletes();
             $table->timestamps();
         });

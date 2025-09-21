@@ -28,6 +28,9 @@ class CourseRequest extends FormRequest
             'title'            => 'required|string|max:255',
             'description'      => 'nullable|string',
             'type'             => 'required|in:online,recorded',
+            'course_type'      => 'nullable|in:private,group',
+            'count_student'    => 'nullable|numeric|min:0',
+            'currency'            => 'nullable|string|max:255',
             'original_price'            => 'required|numeric|min:0',
             'discount'         => 'nullable|numeric|min:0|max:100',
             'what_you_will_learn' => 'nullable|string',
@@ -36,3 +39,5 @@ class CourseRequest extends FormRequest
         ];
     }
 }
+
+
