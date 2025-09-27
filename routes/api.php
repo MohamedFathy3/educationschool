@@ -199,6 +199,8 @@ Route::get('admin/messages', [AdminMessageController::class, 'getMessages']);
 // للمدرس
 Route::middleware('auth:teachers')->group(function () {
     Route::post('withdraw-request', [WithdrawRequestController::class, 'store']);
+        Route::get('withdraw-my', [WithdrawRequestController::class, 'indexTeacher']);
+
 });
 
 // للأدمن

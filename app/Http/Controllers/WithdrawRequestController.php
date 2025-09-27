@@ -6,6 +6,7 @@ use App\Http\Requests\WithdrawRequestStore;
 use App\Http\Resources\WithdrawRequestResource;
 use App\Models\WithdrawRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WithdrawRequestController extends Controller
 {
@@ -32,6 +33,18 @@ class WithdrawRequestController extends Controller
             'data' => new WithdrawRequestResource($withdraw->load('teacher')),
         ], 201);
     }
+
+
+    public function indexTeacher()
+    {
+        $teacher = Auth::user();
+        $withdraws = WithdrawRequest::with('teacher')
+            ->where('teacher_id', $teacher->id)
+            ->get();
+        return WithdrawRequestResource::collection($withdraws);
+    }
+
+
 
     // الأدمن يغير الحالة
     public function updateStatus(Request $request, WithdrawRequest $withdrawRequest)
