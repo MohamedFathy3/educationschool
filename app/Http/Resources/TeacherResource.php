@@ -34,6 +34,7 @@ class TeacherResource extends JsonResource
             'email' => $this->email ?? null,
             'active' => $this->active ?? null,
             'type' =>"teacher",
+            'total_rate' => $this->total_rate ?? null,
             'phone' => $this->phone ?? null,
             'national_id' => $this->national_id ?? null,
             'image' => $this->image ? asset('storage/' . $this->image) : null,

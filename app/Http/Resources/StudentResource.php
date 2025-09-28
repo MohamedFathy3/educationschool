@@ -15,6 +15,9 @@ class StudentResource extends JsonResource
             'type' =>"student",
             'image' => $this->image ? asset('storage/' . $this->image) : null,
             'qr_code' => $this->qr_code ?? null,
+            'total_rate' => $this->total_rate ?? null,
+                'courses'    => CourseResource::collection($this->whenLoaded('courses')),
+
         ];
     }
 }

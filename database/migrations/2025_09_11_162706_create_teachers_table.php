@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
+            $table->integer('total_rate')->default(5);
             $table->string('email')->unique()->nullable();
             $table->string('phone')->nullable();
             $table->string('national_id')->nullable();

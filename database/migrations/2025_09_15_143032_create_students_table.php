@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->integer('total_rate')->default(5);
             $table->string('email')->unique();
             $table->string('qr_code')->unique()->nullable();
             $table->string('password')->nullable();

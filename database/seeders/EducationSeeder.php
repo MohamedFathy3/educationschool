@@ -52,6 +52,7 @@ class EducationSeeder extends Seeder
                 'country_id' => 1,
                 'stage_id' => 1,
                 'subject_id' => 1,
+                'total_rate' => 4,
                 'password' => Hash::make('123456'),
 
                 'bank_name' => 'CIB',
@@ -76,6 +77,7 @@ class EducationSeeder extends Seeder
                 'stage_id' => 2,
                 'subject_id' => 3,
                 'password' => Hash::make('123456'),
+                'total_rate' => 3,
 
                 'bank_name' => 'Banque Misr',
                 'account_holder_name' => 'Sara Mohamed',

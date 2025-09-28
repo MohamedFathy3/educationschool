@@ -29,7 +29,7 @@ class StudentController extends BaseController
     public function index()
     {
         try {
-            $Students = StudentResource::collection($this->crudRepository->all());
+            $Students = StudentResource::collection($this->crudRepository->all(['courses.teacher','courses.stage','courses.subject','courses.country','courses.courseDetail','courses.exams'],[],['*']));
             return $Students->additional(JsonResponse::success());
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
@@ -188,6 +188,16 @@ class StudentController extends BaseController
                 return JsonResponse::respondError('Unauthenticated', 401);
             }
 
+            // Load الكورسات + العلاقات بتاعتها
+            $student->load([
+                'courses.teacher',
+                'courses.stage',
+                'courses.subject',
+                'courses.country',
+                'courses.courseDetail',
+                'courses.exams.questions.choices',
+            ]);
+
             return JsonResponse::respondSuccess([
                 'message' => 'Authenticated',
                 'student' => new StudentResource($student),
@@ -196,6 +206,7 @@ class StudentController extends BaseController
             return JsonResponse::respondError($e->getMessage());
         }
     }
+
 
 
 
@@ -226,7 +237,7 @@ class StudentController extends BaseController
             ], 500);
         }
     }
-    
+
     public function unenroll(Request $request)
     {
         try {
