@@ -93,7 +93,9 @@ Route::middleware(['auth:admins,teachers'])->group(function () {
     Route::post('course-detail/update/{course_detail}', [CourseDetailController::class, 'forceUpdate']);
     Route::put('/course-detail/{id}/{column}', [CourseDetailController::class, 'toggle']);
     Route::apiResource('course-detail', CourseDetailController::class);
-
+    Route::middleware('auth:students')->group(function () {
+        Route::post('student/course-detail/watch', [CourseDetailController::class, 'saveWatchingData']);
+    });
 //////////////////////////////////////////////////////////Course Details//////////////////////////////////////
 
 

@@ -20,4 +20,13 @@ class Student extends BaseModel
     {
         return $this->belongsToMany(Course::class, 'course_student');
     }
+
+    public function watchedLectures()
+    {
+        return $this->belongsToMany(CourseDetail::class, 'student_course_detail')
+            ->withPivot(['course_id', 'started_at', 'watched_duration', 'view'])
+            ->withTimestamps();
+    }
+
+
 }

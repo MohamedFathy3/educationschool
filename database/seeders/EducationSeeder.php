@@ -9,6 +9,7 @@ use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Course;
 use App\Models\CourseDetail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class EducationSeeder extends Seeder
@@ -18,6 +19,7 @@ class EducationSeeder extends Seeder
      */
     public function run(): void
     {
+        
         // Stages
         $stages = [
             ['name' => 'Primary Stage', 'image' => 'stages/primary.png', 'country_id' => 1, 'postion' => 1],
@@ -131,5 +133,132 @@ class EducationSeeder extends Seeder
         foreach ($details as $detail) {
             CourseDetail::create($detail);
         }
+
+
+         {
+        // مراحل stages
+        $stages = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $stages[] = [
+                'name' => "Stage $i",
+                'image' => "https://picsum.photos/seed/stage$i/400/300",
+                'country_id' => 1,
+                'postion' => $i,
+                'active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('stages')->insert($stages);
+
+        // مواد subjects
+        $subjects = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $subjects[] = [
+                'name' => "Subject $i",
+                'image' => "https://picsum.photos/seed/subject$i/400/300",
+                'stage_id' => rand(1, 6),
+                'postion' => $i,
+                'active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('subjects')->insert($subjects);
+
+        // معلمين teachers
+        $teachers = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $teachers[] = [
+                'name' => "Teacher $i",
+                'total_rate' => rand(3, 5),
+                'email' => "teacher$i@example.com",
+                'phone' => "01000000$i",
+                'national_id' => "123456789$i",
+                'image' => "https://i.pravatar.cc/150?img=$i",
+                'certificate_image' => "https://picsum.photos/seed/cert$i/400/300",
+                'experience_image' => "https://picsum.photos/seed/exp$i/400/300",
+                'country_id' => 1,
+                'stage_id' => rand(1, 6),
+                'subject_id' => rand(1, 6),
+                'active' => 1,
+                'password' => Hash::make('123456'),
+
+                'bank_name' => "Bank $i",
+                'account_holder_name' => "Holder $i",
+                'account_number' => "ACC000$i",
+                'iban' => "IBAN000$i",
+                'swift_code' => "SWFT$i",
+                'branch_name' => "Branch $i",
+
+                'wallets_name' => "Vodafone Cash",
+                'wallets_number' => "01000000$i",
+
+                'commission' => 50,
+                'amount' => rand(100, 1000),
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('teachers')->insert($teachers);
+
+        // كورسات courses
+        $courses = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $courses[] = [
+                'teacher_id' => rand(1, 6),
+                'stage_id' => rand(1, 6),
+                'subject_id' => rand(1, 6),
+                'country_id' => 1,
+                'title' => "Course Title $i",
+                'description' => "This is description for Course $i",
+                'type' => $i % 2 == 0 ? 'online' : 'recorded',
+                'course_type' => $i % 2 == 0 ? 'private' : 'group',
+                'count_student' => rand(10, 100),
+                'original_price' => rand(500, 1000),
+                'price' => rand(200, 500),
+                'discount' => rand(0, 50),
+                'currency' => "USD",
+                'what_you_will_learn' => "Learning points for course $i",
+                'image' => "https://picsum.photos/seed/course$i/400/300",
+                'intro_video_url' => "https://www.w3schools.com/html/mov_bbb.mp4",
+                'views_count' => rand(100, 1000),
+                'subscribers_count' => rand(10, 200),
+                'active' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('courses')->insert($courses);
+
+        // طلاب students
+        $students = [];
+        for ($i = 1; $i <= 6; $i++) {
+            $students[] = [
+                'name' => "Student $i",
+                'total_rate' => rand(3, 5),
+                'email' => "student$i@example.com",
+                'qr_code' => "QR$i",
+                'password' => Hash::make('123456'),
+                'image' => "https://i.pravatar.cc/150?img=" . ($i+10),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('students')->insert($students);
+
+        // ربط الطلاب بالكورسات course_student
+        $pivot = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $pivot[] = [
+                'course_id' => rand(1, 6),
+                'student_id' => rand(1, 6),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('course_student')->insert($pivot);
+    }
     }
 }

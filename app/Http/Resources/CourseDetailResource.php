@@ -8,6 +8,25 @@ class CourseDetailResource extends JsonResource
 {
     public function toArray($request)
     {
+        $student = auth('students')->user();
+
+    $watchingData = null;
+
+    if ($student) {
+        $watchingData = \DB::table('course_detail_student')
+            ->where('student_id', $student->id)
+            ->where('course_detail_id', $this->id)
+            ->select('started_at', 'watched_duration', 'view')
+            ->first();
+
+        if ($watchingData) {
+            $watchingData = [
+                'started_at'       => $watchingData->started_at,
+                'watched_duration' => $watchingData->watched_duration,
+                'view'        => (bool) $watchingData->view,
+            ];
+        }
+    }
         return [
             'id'           => $this->id,
             'title'        => $this->title,
@@ -18,6 +37,8 @@ class CourseDetailResource extends JsonResource
             'session_time' => $this->session_time ?? null,
             'file_path'    => $this->file_path ? asset('storage/'.$this->file_path) : null,
             'created_at'   => $this->created_at,
+            'watching_data' => $watchingData, // بيانات المشاهدة للطالب
+
         ];
     }
 }
