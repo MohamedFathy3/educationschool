@@ -137,5 +137,29 @@ class CourseDetailController extends BaseController
         }
     }
 
+    public function saveWatchingData(Request $request)
+    {
+        $student = Auth::user();
+
+        $data = $request->validate([
+            'course_id'        => 'required|exists:courses,id',
+            'course_detail_id' => 'required|exists:course_details,id',
+            'started_at'       => 'nullable|date',
+            'watched_duration' => 'nullable|integer',
+            'completed'        => 'nullable|boolean',
+        ]);
+
+        $student->watchedLectures()->syncWithoutDetaching([
+            $data['course_detail_id'] => [
+                'course_id'        => $data['course_id'],
+                'started_at'       => $data['started_at'] ?? now(),
+                'watched_duration' => $data['watched_duration'] ?? 0,
+                'completed'        => $data['completed'] ?? false,
+            ]
+        ]);
+
+        return response()->json(['message' => 'Watching data saved successfully']);
+    }
+
 }
 
