@@ -30,7 +30,7 @@ class CourseResource extends JsonResource
             'subject'            => new SubjectResource($this->whenLoaded('subject')),
             'country'            => new CountryResource($this->whenLoaded('country')),
             'details'            => CourseDetailResource::collection($this->whenLoaded('courseDetail')),
-            'exams'            => ExamResource::collection($this->whenLoaded('exams')), // --- ADDED ---            
+            'exams'              => ExamResource::collection($this->whenLoaded('exams')), // --- ADDED ---
             'created_at'         => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

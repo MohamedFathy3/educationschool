@@ -12,4 +12,9 @@ class Exam extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    public function studentExams()
+    {
+        return $this->hasMany(StudentExam::class, 'exam_id');
+    }
 }

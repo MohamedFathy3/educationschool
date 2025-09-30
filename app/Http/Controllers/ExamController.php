@@ -138,10 +138,10 @@ class ExamController extends Controller
                 }
             }
 
-            $studentExam->update(['score' => $score]);
+            $studentExam->update(['score' => $score , 'attend' => 1]);
 
             return JsonResponse::respondSuccess(
-                ['score' => $score],
+                ['score' => $score , 'attend' => 1],
                 'Exam submitted successfully'
             );
         } catch (\Exception $e) {

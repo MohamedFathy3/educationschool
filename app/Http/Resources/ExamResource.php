@@ -15,6 +15,9 @@ class ExamResource extends JsonResource
             'duration' => $this->duration,
             'course_id'   => $this->course_id,
             'questions'   => QuestionResource::collection($this->whenLoaded('questions')),
+            'studentExams' => StudentExamResource::collection(
+                $this->whenLoaded('studentExams')
+            ),
             'questions_count'=> $this->when(isset($this->questions_count), $this->questions_count, $this->questions->count()),
             'created_at'  => $this->created_at->toDateTimeString(),
         ];

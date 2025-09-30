@@ -16,10 +16,12 @@ class Student extends BaseModel
         return $this->hasMany(StudentExam::class);
     }
 
+
     public function courses()
     {
         return $this->belongsToMany(Course::class, 'course_student');
     }
+
 
     public function watchedLectures()
     {

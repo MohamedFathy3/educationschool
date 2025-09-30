@@ -23,6 +23,7 @@ class StudentRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'phone' => 'nullable|string',
             'email' => 'nullable|email|unique:students,email,' . $this->student?->id,
             'password'    => 'required|string|min:6|confirmed',
             'image'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',

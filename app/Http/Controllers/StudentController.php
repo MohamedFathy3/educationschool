@@ -196,6 +196,9 @@ class StudentController extends BaseController
                 'courses.country',
                 'courses.courseDetail',
                 'courses.exams.questions.choices',
+                'courses.exams.studentExams' => function ($query) use ($student) {
+                    $query->where('student_id', $student->id);
+                },
             ]);
 
             return JsonResponse::respondSuccess([
