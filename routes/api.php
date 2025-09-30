@@ -96,6 +96,8 @@ Route::middleware(['auth:admins,teachers'])->group(function () {
     Route::middleware('auth:students')->group(function () {
         Route::post('student/course-detail/watch', [CourseDetailController::class, 'saveWatchingData']);
     });
+
+    Route::get('student-course/{course}', [CourseController::class, 'show']);
 //////////////////////////////////////////////////////////Course Details//////////////////////////////////////
 
 
