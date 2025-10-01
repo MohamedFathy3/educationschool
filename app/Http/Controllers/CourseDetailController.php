@@ -146,7 +146,7 @@ class CourseDetailController extends BaseController
             'course_detail_id' => 'required|exists:course_details,id',
             'started_at'       => 'nullable|date',
             'watched_duration' => 'nullable|integer',
-            'completed'        => 'nullable|boolean',
+            'view'        => 'nullable|boolean',
         ]);
 
         $student->watchedLectures()->syncWithoutDetaching([
@@ -154,7 +154,7 @@ class CourseDetailController extends BaseController
                 'course_id'        => $data['course_id'],
                 'started_at'       => $data['started_at'] ?? now(),
                 'watched_duration' => $data['watched_duration'] ?? 0,
-                'completed'        => $data['completed'] ?? false,
+                'view'        => $data['view'] ?? false,
             ]
         ]);
 
