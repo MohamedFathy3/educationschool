@@ -188,13 +188,13 @@ class StudentController extends BaseController
                 return JsonResponse::respondError('Unauthenticated', 401);
             }
 
-            // Load الكورسات + العلاقات بتاعتها
             $student->load([
                 'courses.teacher',
                 'courses.stage',
                 'courses.subject',
                 'courses.country',
                 'courses.courseDetail',
+                'courses.courseDetail.students',
                 'courses.exams.questions.choices',
                 'courses.exams.studentExams' => function ($query) use ($student) {
                     $query->where('student_id', $student->id);
