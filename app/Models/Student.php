@@ -31,4 +31,9 @@ class Student extends BaseModel
     }
 
 
+    public function parent()
+    {
+        return $this->belongsTo(ParentModel::class, 'parent_id');
+    }
+
 }
