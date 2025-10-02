@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('admin_messages', function (Blueprint $table) {
             $table->id();
             $table->text('message')->nullable();
+            $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
     }

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->foreignId('stage_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
-            $table->boolean('active')->default(1);
+            $table->boolean('active')->default(0);
             $table->string('password')->nullable();
 
 /////bank_accounts

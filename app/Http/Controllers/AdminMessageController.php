@@ -31,4 +31,17 @@ class AdminMessageController extends Controller
             'messages' => AdminMessage::latest()->get()
         ]);
     }
+
+    public function markAsRead($id)
+    {
+        $message = AdminMessage::find($id);
+        if (!$message) {
+            return response()->json(['result' => 'Error', 'message' => 'Message not found'], 404);
+        }
+
+        $message->is_read = true;
+        $message->save();
+
+        return response()->json(['result' => 'Success', 'message' => 'Message marked as read']);
+    }
 }
