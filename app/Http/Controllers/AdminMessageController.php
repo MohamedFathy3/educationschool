@@ -28,7 +28,7 @@ class AdminMessageController extends Controller
     {
         return response()->json([
             'result' => 'Success',
-            'messages' => AdminMessage::latest()->get()
+            'messages' => AdminMessage::get()
         ]);
     }
 
