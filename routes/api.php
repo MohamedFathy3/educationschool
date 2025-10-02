@@ -205,7 +205,7 @@ Route::middleware('auth:sanctum')->group(function () {
 //////////////////////////////////////////////////////////admin Message//////////////////////////////////////
 Route::post('admin/messages/send', [AdminMessageController::class, 'sendMessage']);
 Route::get('admin/messages', [AdminMessageController::class, 'getMessages']);
-Route::post('admin/messages/{id}/read', [AdminMessageController::class, 'markAsRead']);
+Route::get('admin/messages/{id}/read', [AdminMessageController::class, 'markAsRead']);
 //////////////////////////////////////////////////////////admin Message//////////////////////////////////////
 
 
