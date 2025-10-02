@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
@@ -226,3 +227,9 @@ Route::middleware('auth:admins')->group(function () {
     Route::get('withdraw-requests', [WithdrawRequestController::class, 'index']);
     Route::put('withdraw-request/{withdrawRequest}/status', [WithdrawRequestController::class, 'updateStatus']);
 });
+
+
+//////////////////////////////////////////////////////////Contact Us//////////////////////////////////////
+Route::post('contact-us', [ContactUsController::class, 'store']);
+Route::get('contact-us', [ContactUsController::class, 'index']);
+//////////////////////////////////////////////////////////Contact Us//////////////////////////////////////
