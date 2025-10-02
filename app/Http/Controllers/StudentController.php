@@ -369,6 +369,7 @@ class StudentController extends BaseController
 
             return JsonResponse::respondSuccess([
                 'message' => 'Authenticated',
+                'type' => 'Perant',
                 'student' => new StudentResource($student),
             ]);
         } catch (\Exception $e) {
