@@ -4,6 +4,7 @@ namespace App\Providers;
 
 
 use App\Interfaces\CountryRepositoryInterface;
+use App\Interfaces\CouponRepositoryInterface;
 use App\Interfaces\CourseDetailRepositoryInterface;
 use App\Interfaces\CourseRepositoryInterface;
 use App\Interfaces\StageRepositoryInterface;
@@ -13,6 +14,7 @@ use App\Interfaces\TeacherRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\CountryRepository;
+use App\Repositories\CouponRepository;
 use App\Repositories\CourseDetailRepository;
 use App\Repositories\CourseRepository;
 use App\Repositories\StageRepository;
@@ -36,6 +38,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(CourseRepositoryInterface::class, CourseRepository::class);
         $this->app->bind(CourseDetailRepositoryInterface::class, CourseDetailRepository::class);
         $this->app->bind(StudentRepositoryInterface::class, StudentRepository::class);
+        $this->app->bind(CouponRepositoryInterface::class, CouponRepository::class);
     }
 
     /**

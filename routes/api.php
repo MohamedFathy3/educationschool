@@ -6,6 +6,7 @@ use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\CountryController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\ExamController;
@@ -234,3 +235,13 @@ Route::middleware('auth:admins')->group(function () {
 Route::post('contact-us', [ContactUsController::class, 'store']);
 Route::get('contact-us', [ContactUsController::class, 'index']);
 //////////////////////////////////////////////////////////Contact Us//////////////////////////////////////
+
+
+
+
+Route::post('coupon/index', [CouponController::class, 'index']);
+Route::delete('coupon/delete', [CouponController::class, 'destroy']);
+Route::post('coupon/update/{coupon}', [CouponController::class, 'forceUpdate']);
+Route::put('/coupon/{id}/{column}', [CouponController::class, 'toggle']);
+Route::apiResource('coupon', CouponController::class);
+Route::post('/apply-coupon', [CouponController::class, 'apply']);
