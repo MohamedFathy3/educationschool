@@ -17,10 +17,13 @@ return new class extends Migration
             $table->integer('total_rate')->default(5);
             $table->string('email')->unique()->nullable();
             $table->string('phone')->nullable();
+            $table->string('teacher_type')->nullable();
             $table->string('national_id')->nullable();
             $table->string('image')->nullable();
             $table->string('certificate_image')->nullable();
             $table->string('experience_image')->nullable();
+            $table->string('id_card_front')->nullable();
+            $table->string('id_card_back')->nullable();
             $table->foreignId('country_id')->constrained()->cascadeOnDelete();
             $table->foreignId('stage_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();

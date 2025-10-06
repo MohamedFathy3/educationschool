@@ -34,15 +34,21 @@ class TeacherResource extends JsonResource
             'email' => $this->email ?? null,
             'active' => $this->active ?? null,
             'type' =>"teacher",
+            'teacher_type' => $this->teacher_type ?? null,
             'total_rate' => $this->total_rate ?? null,
             'phone' => $this->phone ?? null,
             'national_id' => $this->national_id ?? null,
             'image' => $this->image ? asset('storage/' . $this->image) : null,
             'certificate_image' => $this->certificate_image ? asset('storage/' . $this->certificate_image) : null,
             'experience_image' => $this->experience_image ? asset('storage/' . $this->experience_image) : null,
+            'id_card_front' => $this->id_card_front ? asset('storage/' . $this->id_card_front) : null,
+            'id_card_back' => $this->id_card_back ? asset('storage/' . $this->id_card_back) : null,
             'country' => new CountryResource($this->country),
-            'stage' => new StageResource($this->stage),
-            'subject' => new SubjectResource($this->subject),
+
+            'stages' => StageResource::collection($this->whenLoaded('stages')),
+            'subjects' => SubjectResource::collection($this->whenLoaded('subjects')),
+
+
             'account_holder_name' => $this->account_holder_name ?? null,
             'account_number' => $this->account_number ?? null,
             'iban' => $this->iban ?? null,

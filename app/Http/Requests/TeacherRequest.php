@@ -26,16 +26,23 @@ class TeacherRequest extends FormRequest
             'email' => 'nullable|email|unique:teachers,email,' . $this->id,
             'password'    => 'required|string|min:6|confirmed',
             'phone' => 'nullable|string|max:20',
+            'teacher_type' => 'nullable|string',
             'national_id' => 'nullable|string|max:50',
             'image' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             'certificate_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             'experience_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'id_card_front' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
+            'id_card_back' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             'country_id' => 'required|exists:countries,id',
-            'stage_id' => 'required|exists:stages,id',
-            'subject_id' => 'required|exists:subjects,id',
+            'stage_id' => 'required|array',
+            'stage_id.*' => 'exists:stages,id',
+
+            'subject_id' => 'required|array',
+            'subject_id.*' => 'exists:subjects,id',
         ];
     }
 }
+
 
 
 

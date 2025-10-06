@@ -57,6 +57,8 @@ class TeacherController extends BaseController
             'image'            => 'teachers/profile',
             'certificate_image'=> 'teachers/certificates',
             'experience_image' => 'teachers/experience',
+            'id_card_front'  => 'teachers/idCardFront',
+            'id_card_back'  => 'teachers/idCardBack',
         ];
 
         foreach ($files as $field => $folder) {
@@ -152,7 +154,6 @@ class TeacherController extends BaseController
 
 /////////////////////////// Front Methods ///////////////////////////
 
-
     public function register(TeacherRequest $request)
     {
         try {
@@ -163,6 +164,8 @@ class TeacherController extends BaseController
                 'image'             => 'teachers/profile',
                 'certificate_image' => 'teachers/certificates',
                 'experience_image'  => 'teachers/experience',
+                'id_card_front'  => 'teachers/idCardFront',
+                'id_card_back'  => 'teachers/idCardBack',
             ];
 
             foreach ($files as $field => $folder) {
@@ -174,13 +177,22 @@ class TeacherController extends BaseController
                 }
             }
 
+            // حذف stage_id و subject_id من الـ data قبل الإنشاء
+            $stageIds = $data['stage_id'];
+            $subjectIds = $data['subject_id'];
+            unset($data['stage_id'], $data['subject_id']);
+
             $teacher = $this->crudRepository->create($data);
+
+            // ربط العلاقات
+            $teacher->stages()->sync($stageIds);
+            $teacher->subjects()->sync($subjectIds);
 
             $token = $teacher->createToken('teacher_token')->plainTextToken;
 
             return JsonResponse::respondSuccess([
                 'message' => 'Teacher registered successfully',
-                'teacher' => new TeacherResource($teacher),
+                'teacher' => new TeacherResource($teacher->load(['stages', 'subjects'])),
                 'token'   => $token,
             ]);
 
@@ -188,6 +200,7 @@ class TeacherController extends BaseController
             return JsonResponse::respondError($e->getMessage());
         }
     }
+
 
 
     public function login(LoginRequest $request)
@@ -249,6 +262,8 @@ class TeacherController extends BaseController
                 'image'             => 'teachers/profile',
                 'certificate_image' => 'teachers/certificates',
                 'experience_image'  => 'teachers/experience',
+                'id_card_front'  => 'teachers/idCardFront',
+                'id_card_back'  => 'teachers/idCardBack',
             ];
 
             foreach ($files as $field => $folder) {

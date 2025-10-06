@@ -27,14 +27,14 @@ class Teacher extends BaseModel
         return $this->belongsTo(Country::class);
     }
 
-    public function stage(): BelongsTo
+    public function stages()
     {
-        return $this->belongsTo(Stage::class ,'stage_id');
+        return $this->belongsToMany(Stage::class, 'stage_teacher');
     }
 
-    public function subject(): BelongsTo
+    public function subjects()
     {
-        return $this->belongsTo(Subject::class ,'subject_id');
+        return $this->belongsToMany(Subject::class, 'subject_teacher');
     }
 
 }
