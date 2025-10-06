@@ -82,7 +82,7 @@ class CouponController extends BaseController
         {
             $request->validate([
                 'code' => 'required|string',
-                'amount' => 'required|numeric|min:0', // المبلغ قبل الخصم
+                'amount' => 'required|numeric|min:0', 
             ]);
 
             $coupon = Coupon::where('code', $request->code)->first();

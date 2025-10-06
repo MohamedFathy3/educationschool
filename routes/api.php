@@ -28,6 +28,7 @@ use App\Http\Controllers\IT\ReportController;
 use App\Http\Controllers\IT\StorageController;
 use App\Http\Controllers\IT\TicketController;
 use App\Http\Controllers\IT\TypeController;
+use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\StageController;
 use App\Http\Controllers\StudentController;
@@ -245,3 +246,11 @@ Route::post('coupon/update/{coupon}', [CouponController::class, 'forceUpdate']);
 Route::put('/coupon/{id}/{column}', [CouponController::class, 'toggle']);
 Route::apiResource('coupon', CouponController::class);
 Route::post('/apply-coupon', [CouponController::class, 'apply']);
+
+
+
+
+Route::post('student-libraries', [LibraryController::class, 'studentIndex']);
+Route::post('teacher-libraries', [LibraryController::class, 'teacherIndex']);
+Route::apiResource('libraries', LibraryController::class);
+
