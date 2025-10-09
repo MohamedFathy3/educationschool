@@ -62,6 +62,11 @@ class TeacherResource extends JsonResource
             'students_count' => $studentsCount,
             'total_income' => $totalIncome,
             'courses' => $coursesData,
+
+
+
+            'average_rating' => round($this->comments()->avg('rating'), 1),
+            'comments'   => TeacherCommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }

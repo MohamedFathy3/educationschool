@@ -54,9 +54,20 @@ class Course extends BaseModel
     {
         return $this->hasMany(Subscription::class);
     }
-    
+
     public function exams()
     {
         return $this->hasMany(Exam::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(CourseComment::class);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return round($this->comments()->avg('rating'), 1);
+    }
+
 }

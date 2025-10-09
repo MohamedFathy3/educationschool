@@ -36,4 +36,15 @@ class Student extends BaseModel
         return $this->belongsTo(ParentModel::class, 'parent_id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(CourseComment::class);
+    }
+
+
+    public function commentStudent()
+    {
+        return $this->hasMany(StudentComment::class, 'student_id');
+    }
+
 }

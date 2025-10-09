@@ -19,6 +19,11 @@ class StudentResource extends JsonResource
             'total_rate' => $this->total_rate ?? null,
             'courses'    => CourseResource::collection($this->whenLoaded('courses')),
 
+
+
+            'comments' => StudentCommentResource::collection($this->whenLoaded('commentStudent')),
+            'average_rating' => round($this->comments->avg('rating'), 1),
+
         ];
     }
 }

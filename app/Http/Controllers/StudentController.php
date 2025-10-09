@@ -56,15 +56,20 @@ class StudentController extends BaseController
         }
     }
 
-
     public function show(Student $student): ?\Illuminate\Http\JsonResponse
     {
         try {
-            return JsonResponse::respondSuccess('Item Fetched Successfully', new StudentResource($student));
+            $student->load(['commentStudent.teacher']);
+
+            return JsonResponse::respondSuccess(
+                'Item Fetched Successfully',
+                new StudentResource($student)
+            );
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }
     }
+
 
     public function forceUpdate(StudentRequest $request, Student $student)
     {
@@ -200,6 +205,7 @@ class StudentController extends BaseController
                 'courses.exams.studentExams' => function ($query) use ($student) {
                     $query->where('student_id', $student->id);
                 },
+                'commentStudent.teacher',
             ]);
 
             return JsonResponse::respondSuccess([
@@ -365,6 +371,7 @@ class StudentController extends BaseController
                 'courses.exams.studentExams' => function ($query) use ($student) {
                     $query->where('student_id', $student->id);
                 },
+                'commentStudent.teacher',
             ]);
 
             return JsonResponse::respondSuccess([

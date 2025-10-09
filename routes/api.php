@@ -7,6 +7,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\CourseCommentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseDetailController;
 use App\Http\Controllers\ExamController;
@@ -31,8 +32,10 @@ use App\Http\Controllers\IT\TypeController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\StageController;
+use App\Http\Controllers\StudentCommentController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\TeacherCommentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WithdrawRequestController;
@@ -200,7 +203,11 @@ Route::prefix('parent')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('chat/send', [MessageController::class, 'sendMessage']);
     Route::get('chat/messages', [MessageController::class, 'getMessages']);
+    Route::post('courses/{course}/comments', [CourseCommentController::class, 'store']);
+    Route::post('teachers/{teacher}/comments', [TeacherCommentController::class, 'store']);
+    Route::post('student/{student}/comment', [StudentCommentController::class, 'store']);
 });
+
 //////////////////////////////////////////////////////////Message//////////////////////////////////////
 
 
@@ -253,4 +260,8 @@ Route::post('/apply-coupon', [CouponController::class, 'apply']);
 Route::post('student-libraries', [LibraryController::class, 'studentIndex']);
 Route::post('teacher-libraries', [LibraryController::class, 'teacherIndex']);
 Route::apiResource('libraries', LibraryController::class);
+
+
+
+
 

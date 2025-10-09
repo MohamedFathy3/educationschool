@@ -92,7 +92,7 @@ class CourseController extends BaseController
             return JsonResponse::respondSuccess(
                 'Item Fetched Successfully',
                 new CourseResource($course->load(['teacher', 'stage'
-                , 'subject', 'country', 'courseDetail' ,'exams','courseDetail.students']))
+                , 'subject', 'country', 'courseDetail' ,'exams','courseDetail.students','comments.student']))
             );
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());

@@ -37,5 +37,16 @@ class Teacher extends BaseModel
         return $this->belongsToMany(Subject::class, 'subject_teacher');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(TeacherComment::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->comments()->avg('rating');
+    }
+
+
 }
 

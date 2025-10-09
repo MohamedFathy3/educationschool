@@ -31,6 +31,8 @@ class CourseResource extends JsonResource
             'country'            => new CountryResource($this->whenLoaded('country')),
             'details'            => CourseDetailResource::collection($this->whenLoaded('courseDetail')),
             'exams'              => ExamResource::collection($this->whenLoaded('exams')), // --- ADDED ---
+            'comments' => CourseCommentResource::collection($this->whenLoaded('comments')),
+            'average_rating' => round($this->comments->avg('rating'), 1),
             'created_at'         => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

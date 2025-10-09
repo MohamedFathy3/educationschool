@@ -41,11 +41,17 @@ class TeacherController extends BaseController
     public function show(Teacher $teacher): ?\Illuminate\Http\JsonResponse
     {
         try {
-            return JsonResponse::respondSuccess('Item Fetched Successfully', new TeacherResource($teacher));
+            $teacher->load(['comments.student']);
+
+            return JsonResponse::respondSuccess(
+                'Item Fetched Successfully',
+                new TeacherResource($teacher)
+            );
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }
     }
+
 
 
     public function forceUpdate(TeacherRequest $request, Teacher $teacher)
