@@ -144,10 +144,12 @@ class TeacherController extends BaseController
         try {
             $teacher = Teacher::findOrFail($id);
             $teacher->commission = $request->commission;
+            $teacher->secound_email = $request->secound_email;
             $teacher->save();
 
             return JsonResponse::respondSuccess([
-                'new_commission' => $teacher->commission . '%'
+                'new_commission' => $teacher->commission . '%',
+                'secound_email' => $teacher->secound_email
             ]);
         } catch (\Exception $e) {
             return response()->json([

@@ -12,6 +12,7 @@ class WithdrawRequestResource extends JsonResource
             'id'        => $this->id,
             'teacher'   => new TeacherResource($this->whenLoaded('teacher')),
             'amount'    => $this->amount,
+            'transfer_type'    => $this->transfer_type,
             'status'    => $this->status,
             'comment'   => $this->comment,
             'created_at'=> $this->created_at->toDateTimeString(),

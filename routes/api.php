@@ -88,6 +88,8 @@ Route::middleware(['auth:admins,teachers'])->group(function () {
     Route::put('/course/{id}/{column}', [CourseController::class, 'toggle']);
     Route::apiResource('course', CourseController::class);
 });
+Route::delete('/courses/{course_id}/remove-student/{student_id}', [CourseController::class, 'removeStudentFromCourse']);
+
 //////////////////////////////////////////////////////////Course//////////////////////////////////////
 
 

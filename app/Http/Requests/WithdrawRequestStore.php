@@ -23,6 +23,7 @@ class WithdrawRequestStore extends FormRequest
     {
         return [
             'amount' => 'required|numeric|min:1',
+            'transfer_type' => 'required|in:bank,wallet,postal',
         ];
     }
 }

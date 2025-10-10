@@ -40,8 +40,16 @@ class UpdateProfileTeacherRequest extends FormRequest
             'iban' => 'nullable|string|max:255',
             'swift_code' => 'nullable|string|max:255',
             'branch_name' => 'nullable|string|max:255',
+            'postal_transfer_full_name' => 'nullable|string|max:255',
+            'postal_transfer_office_address' => 'nullable|string|max:255',
+            'postal_transfer_recipient_name' => 'nullable|string|max:255',
+            'postal_transfer_recipient_phone' => 'nullable|string|max:255',
             'wallets_name' => 'nullable|string|max:255',
             'wallets_number' => 'nullable|string|max:255',
         ];
     }
 }
+
+
+
+

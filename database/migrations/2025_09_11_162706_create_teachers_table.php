@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->integer('total_rate')->default(5);
             $table->string('email')->unique()->nullable();
+            $table->string('secound_email')->unique()->nullable();
             $table->string('phone')->nullable();
             $table->string('teacher_type')->nullable();
             $table->string('national_id')->nullable();
@@ -38,6 +39,12 @@ return new class extends Migration
             $table->string('iban')->nullable();
             $table->string('swift_code')->nullable();
             $table->string('branch_name')->nullable();
+
+            // Postal transfer fields
+            $table->string('postal_transfer_full_name')->nullable();
+            $table->string('postal_transfer_office_address')->nullable();
+            $table->string('postal_transfer_recipient_name')->nullable();
+            $table->string('postal_transfer_recipient_phone')->nullable();
 
 /////wallets
             $table->string('wallets_name')->nullable();

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['pending', 'received', 'accepted', 'rejected'])->default('pending');
+            $table->enum('transfer_type', ['bank', 'wallet', 'postal'])->default('bank');
             $table->text('comment')->nullable();
             $table->timestamps();
         });

@@ -23,6 +23,8 @@ class UpdateTeacherCommissionRequest extends FormRequest
     {
         return [
             'commission' => 'required|numeric|min:0|max:100',
+            'secound_email' => 'nullable|email|unique:teachers,secound_email',
         ];
     }
 }
+

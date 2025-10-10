@@ -33,6 +33,7 @@ class CourseResource extends JsonResource
             'exams'              => ExamResource::collection($this->whenLoaded('exams')), // --- ADDED ---
             'comments' => CourseCommentResource::collection($this->whenLoaded('comments')),
             'average_rating' => round($this->comments->avg('rating'), 1),
+            'students' => StudentResource::collection($this->whenLoaded('students')),
             'created_at'         => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

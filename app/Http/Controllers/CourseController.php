@@ -7,6 +7,7 @@ use App\Http\Requests\CourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Interfaces\CourseRepositoryInterface;
 use App\Models\Course;
+use App\Models\Student;
 use App\Traits\HttpResponses;
 use Exception;
 use Illuminate\Http\Request;
@@ -92,12 +93,36 @@ class CourseController extends BaseController
             return JsonResponse::respondSuccess(
                 'Item Fetched Successfully',
                 new CourseResource($course->load(['teacher', 'stage'
-                , 'subject', 'country', 'courseDetail' ,'exams','courseDetail.students','comments.student']))
+                , 'subject', 'country', 'courseDetail' ,'exams','courseDetail.students','comments.student',
+                    'students']))
             );
         } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }
     }
+
+
+
+    public function removeStudentFromCourse($course_id, $student_id)
+    {
+        try {
+            $course = Course::findOrFail($course_id);
+            $student = Student::findOrFail($student_id);
+
+            // تأكد إن الطالب داخل الكورس فعلاً
+            if (!$course->students()->where('student_id', $student_id)->exists()) {
+                return JsonResponse::respondError('Student not enrolled in this course', 404);
+            }
+
+            // احذف الربط بين الطالب والكورس
+            $course->students()->detach($student_id);
+
+            return JsonResponse::respondSuccess('Student removed from course successfully');
+        } catch (\Exception $e) {
+            return JsonResponse::respondError($e->getMessage());
+        }
+    }
+
 
 
     public function forceUpdate(CourseRequest $request, Course $course)

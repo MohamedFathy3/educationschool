@@ -23,6 +23,7 @@ class WithdrawRequestController extends Controller
 
         $withdraw = WithdrawRequest::create([
             'teacher_id' => $teacher->id,
+            'transfer_type'     => $request->transfer_type,
             'amount'     => $request->amount,
             'status'     => 'pending',
         ]);

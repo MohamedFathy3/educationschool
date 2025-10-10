@@ -32,6 +32,7 @@ class TeacherResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name   ?? null,
             'email' => $this->email ?? null,
+            'secound_email' => $this->secound_email ?? null,
             'active' => $this->active ?? null,
             'type' =>"teacher",
             'teacher_type' => $this->teacher_type ?? null,
@@ -54,6 +55,10 @@ class TeacherResource extends JsonResource
             'iban' => $this->iban ?? null,
             'swift_code' => $this->swift_code ?? null,
             'branch_name' => $this->branch_name ?? null,
+            'postal_transfer_full_name' => $this->postal_transfer_full_name ?? null,
+            'postal_transfer_office_address' => $this->postal_transfer_office_address ?? null,
+            'postal_transfer_recipient_name' => $this->postal_transfer_recipient_name ?? null,
+            'postal_transfer_recipient_phone' => $this->postal_transfer_recipient_phone ?? null,
             'wallets_name' => $this->wallets_name ?? null,
             'wallets_number' => $this->wallets_number ?? null,
              // التقرير
@@ -70,3 +75,7 @@ class TeacherResource extends JsonResource
         ];
     }
 }
+
+
+
+
