@@ -175,6 +175,8 @@ Route::post('student/login', [StudentController::class, 'login']);
 Route::middleware('auth:sanctum')->get('student/check-auth', [StudentController::class, 'checkAuth']);
 Route::middleware('auth:sanctum')->post('/student/enroll', [StudentController::class, 'enroll']);
 Route::middleware('auth:sanctum')->post('/student/unenroll', [StudentController::class, 'unenroll']);
+Route::middleware('auth:sanctum')->post('student/update-profile', [StudentController::class, 'updateProfile']);
+Route::middleware('auth:sanctum')->delete('student/delete-account', [StudentController::class, 'destroyAccount']);
 
 Route::post('student/index', [StudentController::class, 'index']);
 Route::post('student/restore', [StudentController::class, 'restore']);

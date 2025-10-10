@@ -139,22 +139,31 @@ class TeacherController extends BaseController
 
 
 
-    public function updateCommission(UpdateTeacherCommissionRequest $request, $id)
+ public function updateCommission(UpdateTeacherCommissionRequest $request, $id)
     {
         try {
             $teacher = Teacher::findOrFail($id);
+
+            // تحديث العمولة والإيميل الثاني
             $teacher->commission = $request->commission;
             $teacher->secound_email = $request->secound_email;
+
+            // لو الريكوست فيه مكافأة نضيفها
+            if ($request->filled('reward')) {
+                $teacher->rewards += $request->reward; // نضيف المكافأة على القديمة
+            }
+
             $teacher->save();
 
             return JsonResponse::respondSuccess([
                 'new_commission' => $teacher->commission . '%',
-                'secound_email' => $teacher->secound_email
+                'secound_email' => $teacher->secound_email,
+                'total_rewards' => $teacher->rewards, // نرجع القيمة بعد التحديث
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Something went wrong',
-                'details' => $e->getMessage()
+                'details' => $e->getMessage(),
             ], 500);
         }
     }

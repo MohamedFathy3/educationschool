@@ -67,6 +67,7 @@ class TeacherResource extends JsonResource
             'students_count' => $studentsCount,
             'total_income' => $totalIncome,
             'courses' => $coursesData,
+            'rewards' => $this->rewards ?? null,
 
 
 

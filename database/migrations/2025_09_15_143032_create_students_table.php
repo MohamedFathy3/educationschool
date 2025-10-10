@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
+            $table->date('birth_day')->nullable();
             $table->integer('total_rate')->default(5);
             $table->string('email')->unique();
             $table->string('qr_code')->unique()->nullable();
             $table->string('password')->nullable();
             $table->string('image')->nullable();
+            $table->text('delete_reason')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('parent_models')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();

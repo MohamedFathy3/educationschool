@@ -97,6 +97,53 @@ class StudentController extends BaseController
     }
 
 
+        public function updateProfile(StudentRequest $request)
+        {
+            try {
+                $student = Auth::user();
+
+                if (!$student) {
+                    return JsonResponse::respondError('Unauthenticated', 401);
+                }
+
+                $data = $request->validated();
+
+                if (!empty($data['password'])) {
+                    $data['password'] = Hash::make($data['password']);
+                } else {
+                    unset($data['password']);
+                }
+                $files = [
+                    'image'             => 'students/profile',
+
+                ];
+                foreach ($files as $field => $folder) {
+                    if ($request->hasFile($field)) {
+                        // امسح القديم لو موجود
+                        if ($student->$field && \Storage::disk('public')->exists($student->$field)) {
+                            \Storage::disk('public')->delete($student->$field);
+                        }
+                        $file = $request->file($field);
+                        $filename = $field . '_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                        $path = $file->storeAs($folder, $filename, 'public');
+                        $data[$field] = $path;
+                    }
+                }
+                $this->crudRepository->update($data, $student->id);
+                activity()->performedOn($student)
+                    ->withProperties(['attributes' => $student])
+                    ->log('update_profile');
+
+                return JsonResponse::respondSuccess([
+                    'message' => 'Profile updated successfully',
+                    'student' => new StudentResource($student->fresh()), // عشان نرجع البيانات بعد التحديث
+                ]);
+            } catch (\Exception $e) {
+                return JsonResponse::respondError($e->getMessage());
+            }
+        }
+
+
     public function destroy(Request $request): ?\Illuminate\Http\JsonResponse
     {
         try {
@@ -181,6 +228,34 @@ class StudentController extends BaseController
                 'token'   => $token,
             ]);
         } catch (\Exception $e) {
+            return JsonResponse::respondError($e->getMessage());
+        }
+    }
+
+    public function destroyAccount(Request $request)
+    {
+        try {
+            $student = Auth::user(); // ✅ استخدم auth:sanctum الافتراضي
+
+            if (!$student) {
+                return JsonResponse::respondError('Unauthorized', 401);
+            }
+
+            // تحقق من وجود السبب
+            if (!$request->reason) {
+                return JsonResponse::respondError('Please provide a reason for deleting the account', 422);
+            }
+
+            // حفظ السبب
+            $student->update([
+                'delete_reason' => $request->reason,
+            ]);
+
+            // حذف الحساب (Soft Delete)
+            $student->delete();
+
+            return JsonResponse::respondSuccess('Account deleted successfully');
+        } catch (Exception $e) {
             return JsonResponse::respondError($e->getMessage());
         }
     }
