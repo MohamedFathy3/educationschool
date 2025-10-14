@@ -23,9 +23,9 @@ class UpdateTeacherCommissionRequest extends FormRequest
     {
         return [
             'commission' => 'required|numeric|min:0|max:100',
-            'secound_email' => 'nullable|email|unique:teachers,secound_email,' . $this->teacher,
+            'secound_email' => 'nullable|unique:teachers,secound_email,' . $this->route('id'),
             'reward' => 'nullable|numeric|min:0',
         ];
     }
-}
 
+}
