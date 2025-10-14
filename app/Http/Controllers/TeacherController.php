@@ -250,7 +250,7 @@ class TeacherController extends BaseController
 
             return JsonResponse::respondSuccess([
                 'message' => 'Authenticated',
-                'teacher' => new TeacherResource($teacher),
+                'teacher' => new TeacherResource($teacher->load(['stages', 'subjects'])),
             ]);
         } catch (\Exception $e) {
             return JsonResponse::respondError($e->getMessage());
