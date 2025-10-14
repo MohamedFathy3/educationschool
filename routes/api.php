@@ -55,6 +55,7 @@ Route::middleware('auth:admins')->group(function () {
     Route::get('/admin/check-auth', [AdminController::class, 'checkAuth']);
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 });
+Route::get('admin/dashboard-stats', [AdminController::class, 'index']);
 
 //////////////////////////////////////////////////////////Teacher//////////////////////////////////////
 Route::post('teachers/register', [TeacherController::class, 'register']);
