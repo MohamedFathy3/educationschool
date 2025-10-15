@@ -23,7 +23,7 @@ class CourseResource extends JsonResource
             'course_type'        => $this->course_type ?? null,
             'count_student'        => $this->count_student ?? null,
             'currency'        => $this->currency ?? null,
-            'subscribers_count'  => $this->subscribers_count,
+            'subscribers_count'  => $this->students()->count(),
             'active'             => (bool) $this->active,
             'teacher'            => new TeacherResource($this->whenLoaded('teacher')),
             'stage'              => new StageResource($this->whenLoaded('stage')),

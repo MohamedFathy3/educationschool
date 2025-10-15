@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->text('delete_reason')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('parent_models')->onDelete('cascade');
+            $table->foreignId('stage_id')->nullable()->constrained('stages')->onDelete('cascade');
+            $table->foreignId('country_id')->nullable()->constrained('countries')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

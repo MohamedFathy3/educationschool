@@ -18,6 +18,9 @@ class StudentResource extends JsonResource
             'qr_code' => $this->qr_code ?? null,
             'delete_reason' => $this->delete_reason ?? null,
             'birth_day' => $this->birth_day ?? null,
+            'stage' => $this->stage->name ?? null,
+            'country' => $this->country->name ?? null,
+
             'courses'    => CourseResource::collection($this->whenLoaded('courses')),
 
 

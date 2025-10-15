@@ -36,6 +36,16 @@ class Student extends BaseModel
         return $this->belongsTo(ParentModel::class, 'parent_id');
     }
 
+    public function stage()
+    {
+        return $this->belongsTo(Stage::class, 'stage_id');
+    }
+    
+    public function country()
+    {
+        return $this->belongsTo(Country::class, 'country_id');
+    }
+
     public function comments()
     {
         return $this->hasMany(CourseComment::class);
