@@ -9,11 +9,14 @@ use App\Http\Requests\UpdateProfileTeacherRequest;
 use App\Http\Requests\UpdateTeacherCommissionRequest;
 use App\Http\Resources\TeacherResource;
 use App\Interfaces\TeacherRepositoryInterface;
+use App\Models\Course;
+use App\Models\Student;
 use App\Models\Teacher;
 use App\Traits\HttpResponses;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 
 class TeacherController extends BaseController
@@ -309,6 +312,40 @@ class TeacherController extends BaseController
             ]);
         } catch (\Exception $e) {
             return JsonResponse::respondError($e->getMessage());
+        }
+    }
+
+
+
+
+  public function report(): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $totalStudents = Student::count();
+            $totalCourses  = Course::count();
+            $totalTeachers = Teacher::count();
+
+            $totalVisitors = Cache::get('total_visitors', 0);
+
+            $totalVisitors++;
+            Cache::put('total_visitors', $totalVisitors);
+
+            $data = [
+                'total_students' => $totalStudents,
+                'total_teachers' => $totalTeachers,
+                'total_courses'  => $totalCourses,
+                'total_visitors' => $totalVisitors,
+            ];
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 }

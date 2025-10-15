@@ -268,5 +268,6 @@ Route::apiResource('libraries', LibraryController::class);
 
 
 
+Route::get('/report-homepage', [TeacherController::class, 'report']);
 
 
