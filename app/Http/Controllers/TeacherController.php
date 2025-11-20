@@ -6,6 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\TeacherRequest;
 use App\Http\Requests\UpdateProfileTeacherRequest;
+use App\Http\Requests\UpdateProfileTeacherTwoRequest;
 use App\Http\Requests\UpdateTeacherCommissionRequest;
 use App\Http\Resources\TeacherResource;
 use App\Interfaces\TeacherRepositoryInterface;
@@ -261,7 +262,7 @@ class TeacherController extends BaseController
     }
 
 
-    public function updateProfile(UpdateProfileTeacherRequest $request)
+    public function updateProfile(UpdateProfileTeacherTwoRequest $request)
     {
         try {
             $teacher = Auth::user();
