@@ -24,7 +24,7 @@ class UpdateProfileTeacherTwoRequest extends FormRequest
          return [
             'name' => 'nullable|string|max:255',
             'email' => 'nullable|email',
-            'secound_email' => 'nullable|secound_email',
+            'secound_email' => 'nullable|email',
             'phone' => 'nullable|string|max:20',
             'national_id' => 'nullable|string|max:50',
             'password'    => 'nullable|string|min:6|confirmed',
