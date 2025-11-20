@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProfileTeacherRequest extends FormRequest
+class UpdateProfileTeacherTwoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,17 +22,18 @@ class UpdateProfileTeacherRequest extends FormRequest
     public function rules(): array
     {
          return [
-            'name' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'email' => 'nullable|email',
+            'secound_email' => 'nullable|secound_email',
             'phone' => 'nullable|string|max:20',
             'national_id' => 'nullable|string|max:50',
-            'password'    => 'required|string|min:6|confirmed',
+            'password'    => 'nullable|string|min:6|confirmed',
             'image' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             'certificate_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             'experience_image' => 'nullable|file|mimes:jpg,jpeg,png,pdf',
-            'country_id' => 'required|exists:countries,id',
-            'stage_id' => 'required|exists:stages,id',
-            'subject_id' => 'required|exists:subjects,id',
+            'country_id' => 'nullable|exists:countries,id',
+            'stage_id' => 'nullable|exists:stages,id',
+            'subject_id' => 'nullable|exists:subjects,id',
             'bank_name' => 'nullable|string|max:255',
 
             'account_holder_name' => 'nullable|string|max:255',
@@ -51,5 +52,5 @@ class UpdateProfileTeacherRequest extends FormRequest
 }
 
 
-// secound_email 
+// secound_email
 
