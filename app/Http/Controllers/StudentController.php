@@ -6,6 +6,7 @@ use App\Helpers\JsonResponse;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\EnrollCourseRequest;
 use App\Http\Requests\StudentRequest;
+use App\Http\Requests\StudentUpdateRequest;
 use App\Http\Resources\StudentResource;
 use App\Interfaces\StudentRepositoryInterface;
 use App\Models\ParentModel;
@@ -97,7 +98,7 @@ class StudentController extends BaseController
     }
 
 
-        public function updateProfile(StudentRequest $request)
+        public function updateProfile(StudentUpdateRequest $request)
         {
             try {
                 $student = Auth::user();
