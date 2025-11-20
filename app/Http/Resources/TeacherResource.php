@@ -69,6 +69,7 @@ class TeacherResource extends JsonResource
             'all_total_income' => array_sum(array_column($coursesData, 'course_income')),
             'courses' => $coursesData,
             'rewards' => $this->rewards ?? null,
+            'net_income' => $totalIncome + (float) ($this->rewards ?? 0),
 
 
 
