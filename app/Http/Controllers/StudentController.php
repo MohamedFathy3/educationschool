@@ -375,14 +375,14 @@ class StudentController extends BaseController
                 'phone'    => 'required|string|unique:parent_models,phone',
                 'email'    => 'required|email|unique:parent_models,email',
                 'password' => 'required|min:6',
-                'qr_code'  => 'required|exists:students,qr_code',
+                'qr_code'  => 'required|exists:students,phone',
             ]);
 
             $data['password'] = Hash::make($data['password']);
 
             $parent = ParentModel::create($data);
 
-            $student = Student::where('qr_code', $request->qr_code)->first();
+            $student = Student::where('phone', $request->phone)->first();
             $student->update(['parent_id' => $parent->id]);
 
             return response()->json([
@@ -396,11 +396,11 @@ class StudentController extends BaseController
     public function loginParent(Request $request)
     {
         $request->validate([
-            'qr_code'  => 'required|string|exists:students,qr_code',
+            'qr_code'  => 'required|string|exists:students,phone',
             'password' => 'required',
         ]);
 
-        $student = Student::where('qr_code', $request->qr_code)->first();
+        $student = Student::where('phone', $request->phone)->first();
 
         if (!$student || !$student->parent) {
             return response()->json(['message' => 'Student not linked with parent'], 404);
