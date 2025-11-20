@@ -231,12 +231,15 @@ class TeacherController extends BaseController
             $email = $credentials['email'];
 
             $teacher = Teacher::where('active', 1)
-                ->where(function ($query) use ($email) {
-                    $query->whereRaw('LOWER(email) = ?', [strtolower(trim($email))])
-                        ->orWhereRaw('LOWER(secound_email) = ?', [strtolower(trim($email))]);
-                })
+                ->whereRaw('LOWER(email) = ?', [$email])
                 ->first();
 
+            // 2️⃣ لو مش موجود → ابحث بالإيميل التاني
+            if (!$teacher) {
+                $teacher = Teacher::where('active', 1)
+                    ->whereRaw('LOWER(secound_email) = ?', [$email])
+                    ->first();
+            }
 
             if (!$teacher || !Hash::check($credentials['password'], $teacher->password)) {
                 return JsonResponse::respondError('Invalid email or password', 401);
