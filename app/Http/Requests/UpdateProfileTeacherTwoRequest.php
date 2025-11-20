@@ -23,7 +23,7 @@ class UpdateProfileTeacherTwoRequest extends FormRequest
     {
          return [
             'name' => 'nullable|string|max:255',
-            'email' => 'nullable|email',
+            'email' => 'nullable|email|unique:teachers,email,' . $this->id,
             'secound_email' => 'nullable|email',
             'phone' => 'nullable|string|max:20',
             'national_id' => 'nullable|string|max:50',
