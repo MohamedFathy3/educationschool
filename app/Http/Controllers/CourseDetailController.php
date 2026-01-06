@@ -50,6 +50,12 @@ class CourseDetailController extends BaseController
                 $data['file_path'] = $path;
             }
 
+            if ($request->hasFile('video')) {
+                $video = $request->file('video');
+                $filename = 'course_video_' . time() . '_' . uniqid() . '.' . $video->getClientOriginalExtension();
+                $data['video_path'] = $video->storeAs('course_details/videos', $filename, 'public');
+            }
+
             $detail = CourseDetail::create($data);
 
             return response()->json([
@@ -89,6 +95,18 @@ class CourseDetailController extends BaseController
                 $path = $file->storeAs('course_details', $filename, 'public');
                 $data['file_path'] = $path;
             }
+
+            if ($request->hasFile('video')) {
+
+                if ($course_detail->video_path && Storage::disk('public')->exists($course_detail->video_path)) {
+                    Storage::disk('public')->delete($course_detail->video_path);
+                }
+
+                $video = $request->file('video');
+                $filename = 'course_video_' . time() . '_' . uniqid() . '.' . $video->getClientOriginalExtension();
+                $data['video_path'] = $video->storeAs('course_details/videos', $filename, 'public');
+            }
+
 
             $course_detail->update($data);
 

@@ -52,10 +52,10 @@ class CourseDetailResource extends JsonResource
             'session_date'  => $this->session_date ?? null,
             'session_time'  => $this->session_time ?? null,
             'file_path'     => $this->file_path ? asset('storage/'.$this->file_path) : null,
+            'video_path'    => $this->video_path ? asset('storage/'.$this->video_path) : null, // هنا الفيديو
             'created_at'    => $this->created_at,
             'watching_data' => $watchingData,
             'students'      => $students, // بيانات الطلاب المرتبطين بالدرس
         ];
     }
 }
-
